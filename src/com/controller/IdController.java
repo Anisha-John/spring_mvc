@@ -8,14 +8,42 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
 
 @Controller
 
 public class IdController {
 	
-	int flag=1;
-	String json;
+	public IdController(){}
+	
+	
+
+	
+	@RequestMapping(value="/getAllEmployees/{empid}",method = RequestMethod.GET) 
+	public ModelAndView display_emp(@PathVariable int empid) throws Exception{
+		EmployeeController ec = new EmployeeController();
+		ObjectMapper map= new ObjectMapper();
+		String json="Null";
+
+		ArrayList<Employee> elist = ec.getmethod();
+		for(Employee employee  : elist) {
+			if( empid == employee.getEid()){	
+			System.out.println("checked and same");
+			 json= map.writeValueAsString(employee);
+			}}
+			
+		
+		return new ModelAndView("empdetails","el",json);
+	}
+	
+
+	
+	
+//previous code	using modelmap
+	
+	/*int flag=1;
+	String json="Null";
 	
 	EmployeeController ec = new EmployeeController();
 		
@@ -39,5 +67,5 @@ public class IdController {
 		System.out.println(json);
 
 return "empdetails";
-}
+}*/
 }
